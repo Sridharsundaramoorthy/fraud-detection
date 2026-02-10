@@ -1,0 +1,173 @@
+# Agentic AI Fraud Detection System - Configuration
+
+# Database Settings
+database:
+  host: "localhost"
+  port: 27017
+  name: "fraud_detection_db"
+  
+# Image Storage
+storage:
+  image_base_path: "./data/images"
+  delivery_folder: "delivery"
+  return_folder: "returns"
+  max_image_size_mb: 10
+  allowed_formats: ["jpg", "jpeg", "png"]
+
+# Image Quality Validation
+image_quality:
+  min_resolution: [640, 480]  # width, height
+  max_blur_threshold: 100  # Laplacian variance (lower = more blurry)
+  min_brightness: 30
+  max_brightness: 225
+  min_file_size_kb: 50
+
+# Return Policy
+return_policy:
+  max_return_days: 7
+  grace_period_hours: 0  # Extra hours after 7 days
+
+# Product Categories & Thresholds
+categories:
+  electronics:
+    fraud_reject_threshold: 70  # Reject if fraud score > 70%
+    manual_review_threshold: 40
+    similarity_threshold: 0.75  # Min similarity required
+    high_value_amount: 500  # USD
+    
+  clothing:
+    fraud_reject_threshold: 90
+    manual_review_threshold: 60
+    similarity_threshold: 0.65
+    high_value_amount: 200
+    
+  accessories:
+    fraud_reject_threshold: 80
+    manual_review_threshold: 50
+    similarity_threshold: 0.70
+    high_value_amount: 100
+    
+  home_appliances:
+    fraud_reject_threshold: 75
+    manual_review_threshold: 45
+    similarity_threshold: 0.72
+    high_value_amount: 300
+    
+  default:  # Fallback for unknown categories
+    fraud_reject_threshold: 80
+    manual_review_threshold: 50
+    similarity_threshold: 0.70
+    high_value_amount: 250
+
+# Fraud Scoring Weights (must sum to 1.0)
+fraud_weights:
+  visual_similarity: 0.35  # (1 - similarity_score)
+  damage_score: 0.25
+  customer_risk: 0.20
+  temporal_violation: 0.10
+  missing_accessories: 0.10
+
+# Customer Risk Profiling
+customer_risk:
+  max_returns_30_days: 3  # Flag if > 3 returns in 30 days
+  high_risk_score_threshold: 0.7
+  whitelist_min_orders: 10  # Trusted if > 10 successful orders
+  blacklist_fraud_count: 5  # Ban if 5 fraud cases
+
+# Damage Detection
+damage_detection:
+  model: "yolov8n"  # YOLOv8 nano for speed
+  confidence_threshold: 0.4
+  damage_classes: ["scratch", "crack", "dent", "broken", "damaged"]
+
+# OCR Settings
+ocr:
+  enabled: true
+  languages: ['en']  # EasyOCR languages
+  confidence_threshold: 0.6
+  serial_patterns:  # Regex patterns for serial numbers
+    - "[A-Z0-9]{10,20}"
+    - "SN[0-9]{8,12}"
+    - "[0-9]{12,15}"
+
+# Accessory Verification
+accessory_detection:
+  model: "yolov8s"  # YOLOv8 small for better accuracy
+  confidence_threshold: 0.5
+  expected_items:
+    smartphone:
+      - charger
+      - cable
+      - earphones
+      - manual
+      - box
+    laptop:
+      - charger
+      - cable
+      - manual
+      - box
+    headphones:
+      - cable
+      - case
+      - manual
+    camera:
+      - battery
+      - charger
+      - strap
+      - lens_cap
+      - manual
+
+# CLIP Model Settings
+clip:
+  model_name: "ViT-B/32"  # CLIP model variant
+  device: "cuda"  # "cuda" or "cpu"
+  batch_size: 8
+
+# Grok API Settings
+grok_api:
+  endpoint: "https://api.x.ai/v1/chat/completions"
+  model: "grok-2-latest"
+  max_tokens: 500
+  temperature: 0.3
+
+# Alerts & Notifications
+alerts:
+  enable_email: false  # Set to true to enable
+  email_recipients: []
+  high_risk_threshold: 80  # Send alert if fraud score > 80%
+  
+# Security
+security:
+  enable_image_hashing: true
+  hash_algorithm: "sha256"
+  session_timeout_minutes: 30
+  max_login_attempts: 3
+
+# User Roles
+roles:
+  delivery_person:
+    - upload_delivery_images
+    - view_delivery_status
+  warehouse_staff:
+    - upload_return_images
+    - view_fraud_results
+  manager:
+    - manual_review
+    - override_decision
+    - view_analytics
+  admin:
+    - all_permissions
+    - manage_users
+    - update_settings
+
+# Analytics
+analytics:
+  retention_days: 90  # Keep data for 90 days
+  dashboard_refresh_interval: 60  # seconds
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "logs/fraud_detection.log"
+  max_file_size_mb: 50
+  backup_count: 5

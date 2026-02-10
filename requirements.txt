@@ -1,0 +1,46 @@
+# Core Dependencies
+streamlit==1.31.0
+pymongo==4.6.1
+python-dotenv==1.0.0
+
+# Computer Vision & ML
+opencv-python==4.9.0.80
+opencv-contrib-python==4.9.0.80
+pillow==10.2.0
+numpy==1.26.3
+torch==2.1.2
+torchvision==0.16.2
+transformers==4.37.0
+ultralytics==8.1.0  # YOLOv8
+
+# OCR
+easyocr==1.7.1
+pytesseract==0.3.10
+
+# Image Processing
+scikit-image==0.22.0
+imutils==0.5.4
+
+# CLIP for embeddings
+open-clip-torch==2.24.0
+
+# API & Utilities
+requests==2.31.0
+pyyaml==6.0.1
+python-dateutil==2.8.2
+pandas==2.2.0
+
+# Visualization
+plotly==5.18.0
+matplotlib==3.8.2
+seaborn==0.13.2
+
+# Security
+bcrypt==4.1.2
+cryptography==42.0.0
+
+# Progress bars
+tqdm==4.66.1
+
+# Email notifications (optional)
+python-mail==1.0.2
